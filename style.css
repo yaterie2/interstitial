@@ -1,0 +1,9 @@
+/* default */
+body {
+  cursor: default;
+}
+
+/* magnifying glass */
+body.cursor-magnify {
+  cursor: url("../assets/cursor/eye.png") 16 16, zoom-in;
+}

@@ -4,14 +4,20 @@
 let cam = {
   x: 0,
   y: 0,
-  zoom: 1,
+  zoom: 1.15, // default zoom
   targetX: 0,
   targetY: 0,
-  targetZoom: 1,
+  targetZoom: 1.15,
 };
 
 let selectedOrganism = null;
 let infoOpen = false;
+
+let eyeCursor;
+
+function preload() {
+  eyeCursor = loadImage("assets/cursor/eye.png");
+}
 
 // ------------------------------------------------------------
 // WORLD LAYERS
@@ -40,94 +46,48 @@ let copepods = [];
 function setup() {
   createCanvas(windowWidth, windowHeight);
 
+  // UI (DOM-based)
+  setupUI();
+
   // --- BACKGROUND & SUBSTRATE ---
   bg = new Background();
   biofilm = new Biofilm();
   sand = new Sand();
   darkSand = new DarkSand();
 
-  // --- NEMATODES ---
-  for (let i = 0; i < 12; i++) {
-    nematodes.push(
-      new Nematode(
-        random(width * 0.2, width * 0.8),
-        random(height * 0.2, height * 0.8)
-      )
-    );
-  }
+  // --- ORGANISMS ---
+  for (let i = 0; i < 12; i++)
+    nematodes.push(new Nematode(random(width), random(height)));
 
-  // --- COPEPODS ---
-  for (let i = 0; i < 7; i++) {
-    copepods.push(
-      new Copepod(
-        random(width * 0.2, width * 0.8),
-        random(height * 0.2, height * 0.8)
-      )
-    );
-  }
+  for (let i = 0; i < 7; i++)
+    copepods.push(new Copepod(random(width), random(height)));
 
-  // --- GASTROTRICHS ---
-  for (let i = 0; i < 32; i++) {
-    gastrotrichs.push(
-      new Gastrotrich(
-        random(width * 0.2, width * 0.8),
-        random(height * 0.2, height * 0.8)
-      )
-    );
-  }
+  for (let i = 0; i < 32; i++)
+    gastrotrichs.push(new Gastrotrich(random(width), random(height)));
 
-  // --- OLIGOCHAETES ---
-  for (let i = 0; i < 4; i++) {
-    oligochaetes.push(
-      new Oligochaete(
-        random(width * 0.2, width * 0.8),
-        random(height * 0.2, height * 0.8)
-      )
-    );
-  }
+  for (let i = 0; i < 4; i++)
+    oligochaetes.push(new Oligochaete(random(width), random(height)));
 
-  // --- KINORHYNCHS ---
-  for (let i = 0; i < 8; i++) {
-    kinorhynchs.push(
-      new Kinorhynch(
-        random(width * 0.25, width * 0.75),
-        random(height * 0.25, height * 0.75)
-      )
-    );
-  }
+  for (let i = 0; i < 8; i++)
+    kinorhynchs.push(new Kinorhynch(random(width), random(height)));
 
-  // --- CILIATES ---
-  for (let i = 0; i < 28; i++) {
+  for (let i = 0; i < 28; i++)
     ciliates.push(new Ciliate(random(width), random(height)));
-  }
 
-  // --- TARDIGRADES ---
-  for (let i = 0; i < 3; i++) {
-    tardigrades.push(
-      new Tardigrade(
-        random(width * 0.3, width * 0.7),
-        random(height * 0.3, height * 0.7)
-      )
-    );
-  }
+  for (let i = 0; i < 3; i++)
+    tardigrades.push(new Tardigrade(random(width), random(height)));
 
-  // --- DIATOMS ---
-  for (let i = 0; i < 80; i++) {
-    diatoms.push(new Diatom(random(width), random(height * 0.6)));
-  }
+  for (let i = 0; i < 80; i++)
+    diatoms.push(new Diatom(random(width), random(height)));
 
-  // --- FORAMINIFERA ---
-  for (let i = 0; i < 40; i++) {
+  for (let i = 0; i < 40; i++)
     forams.push(new Foraminifera(random(width), random(height)));
-  }
 
   // --- INITIAL CAMERA CENTER ---
   cam.x = width / 2;
   cam.y = height / 2;
   cam.targetX = cam.x;
   cam.targetY = cam.y;
-  cam.zoom = 1;
-  cam.targetZoom = 1;
 }
 
 // ------------------------------------------------------------
@@ -152,41 +112,21 @@ function draw() {
 
   biofilm.display();
 
-  for (let t of tardigrades) {
-    t.update();
-    t.display();
-  }
-  for (let n of nematodes) {
-    n.update();
-    n.display();
-  }
-  for (let c of copepods) {
-    c.update();
-    c.display();
-  }
-  for (let d of diatoms) {
-    d.update();
-    d.display();
-  }
-  for (let f of forams) {
-    f.update();
-    f.display();
-  }
-  for (let k of kinorhynchs) {
-    k.update();
-    k.display();
-  }
-  for (let c of ciliates) {
-    c.update();
-    c.display();
-  }
-  for (let g of gastrotrichs) {
-    g.update();
-    g.display();
-  }
-  for (let o of oligochaetes) {
-    o.update();
-    o.display();
+  for (let arr of [
+    tardigrades,
+    nematodes,
+    copepods,
+    diatoms,
+    forams,
+    kinorhynchs,
+    ciliates,
+    gastrotrichs,
+    oligochaetes,
+  ]) {
+    for (let o of arr) {
+      o.update();
+      o.display();
+    }
   }
 
   sand.display();
@@ -201,7 +141,29 @@ function draw() {
       selectedOrganism.camY ?? selectedOrganism.y ?? selectedOrganism.pos?.y;
   }
 
-  drawUI();
+  // ---------- UI & CURSOR ----------
+  updateUI(selectedOrganism);
+  updateCursor();
+}
+
+// ------------------------------------------------------------
+// CURSOR HANDLING (CSS-BASED, STABLE)
+// ------------------------------------------------------------
+function updateCursor() {
+  let wx = (mouseX - width / 2) / cam.zoom + cam.x;
+  let wy = (mouseY - height / 2) / cam.zoom + cam.y;
+
+  let hit = findClosestOrganism(wx, wy, 20 / cam.zoom);
+
+  if (hit && eyeCursor) {
+    cursor(eyeCursor, eyeCursor.width / 2, eyeCursor.height / 2);
+  } else {
+    cursor("default");
+  }
+
+  if (hit) {
+    console.log("hovering organism");
+  }
 }
 
 // ------------------------------------------------------------
@@ -211,26 +173,17 @@ function mousePressed() {
   let wx = (mouseX - width / 2) / cam.zoom + cam.x;
   let wy = (mouseY - height / 2) / cam.zoom + cam.y;
 
-  let hit = findClosestOrganism(wx, wy, 20);
+  let hit = findClosestOrganism(wx, wy, 20 / cam.zoom);
 
   if (hit) {
     selectedOrganism = hit;
-    cam.targetZoom = 3.0;
+    cam.targetZoom = 2.6;
   } else {
     selectedOrganism = null;
-    cam.targetZoom = 1.0;
+    cam.targetZoom = 1.15;
     cam.targetX = width / 2;
     cam.targetY = height / 2;
-  }
-
-  if (selectedOrganism) {
-    const margin = 28;
-    const y = height - 44;
-    const infoX = margin + textWidth(selectedOrganism.speciesName) + 16;
-
-    if (dist(mouseX, mouseY, infoX, y) < 10) {
-      infoOpen = !infoOpen;
-    }
+    hideUI();
   }
 }
 
@@ -265,38 +218,4 @@ function findClosestOrganism(x, y, radius) {
     }
   }
   return closest;
-}
-
-function drawUI() {
-  if (!selectedOrganism) return;
-
-  push();
-  resetMatrix(); // 🔒 CRITICAL: prevents camera distortion
-
-  const margin = 28;
-  const y = height - 44;
-
-  // background pill
-  noStroke();
-  fill(20, 20, 20, 170);
-  rect(margin - 14, y - 18, 300, 36, 18);
-
-  // organism name
-  fill(240);
-  textSize(14);
-  textAlign(LEFT, CENTER);
-  text(selectedOrganism.speciesName, margin, y);
-
-  // info icon
-  const infoX = margin + textWidth(selectedOrganism.speciesName) + 16;
-  const r = 9;
-
-  fill(235);
-  ellipse(infoX, y, r * 2);
-
-  fill(30);
-  textAlign(CENTER, CENTER);
-  text("i", infoX, y + 1);
-
-  pop();
 }

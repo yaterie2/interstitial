@@ -1,0 +1,84 @@
+/* -----------------------------
+   ORGANISM UI CONTAINER
+------------------------------ */
+#organism-ui {
+  position: fixed;
+  bottom: 14%;
+  left: 50%;
+  transform: translateX(-50%);
+
+  display: flex;
+  align-items: center;
+  gap: 16px;
+
+  padding: 10px 20px;
+  border-radius: 999px;
+
+  background: rgba(255, 255, 255, 0.45);
+  backdrop-filter: blur(6px);
+
+  font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 24px;
+  color: #100470;
+
+  opacity: 0;
+  transition: opacity 0.25s ease;
+
+  user-select: none;
+
+  /* 🔒 CRITICAL */
+  pointer-events: none;
+  /* cursor: default; */
+}
+
+/* -----------------------------
+   ORGANISM NAME
+------------------------------ */
+#organism-name {
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+
+/* -----------------------------
+   INFO ICON
+------------------------------ */
+#info-icon {
+  font-size: 28px;
+  line-height: 1;
+  opacity: 0.85;
+
+  /* ❌ DO NOT override cursor */
+pointer-events: auto;
+  cursor: pointer;}
+
+#info-icon:hover {
+  opacity: 1;
+}
+
+/* -----------------------------
+   INFO PANEL
+------------------------------ */
+#info-panel {
+  position: fixed;
+  bottom: 22%;
+  left: 50%;
+  transform: translateX(-50%);
+
+  max-width: 520px;
+  padding: 14px 18px;
+
+  background: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(6px);
+
+  font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 14px;
+  line-height: 1.5;
+  color: #100470;
+
+  border-radius: 12px;
+
+  display: none;
+
+  user-select: none;
+}
