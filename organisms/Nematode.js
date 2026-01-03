@@ -14,9 +14,15 @@ class Nematode {
       this.spine.push(createVector(x - i * this.segmentLength, y));
     }
 
+    // 🔴 exposed positions for camera & picking
+    this.x = x;
+    this.y = y;
+    this.hitX = x;
+    this.hitY = y;
+
     // ---- MOTION ----
     this.heading = random(TWO_PI);
-    this.speed = random(0.12, 0.24); // 🔴 slightly faster overall
+    this.speed = random(0.12, 0.24);
 
     // ---- CURVATURE CONTROL ----
     this.baseTurnNoise = random(1000);
@@ -24,7 +30,7 @@ class Nematode {
     this.curvatureTarget = 0;
 
     // ---- LOOP TRIGGER ----
-    this.loopCooldown = floor(random(420, 900)); // 🔴 less frequent
+    this.loopCooldown = floor(random(420, 900));
     this.loopStrength = 0;
 
     // ---- UNDULATION ----
@@ -53,20 +59,20 @@ class Nematode {
     // ---- LOOP TRIGGER ----
     this.loopCooldown--;
     if (this.loopCooldown <= 0) {
-      this.loopStrength = random(0.015, 0.025); // 🔴 much wider loops
+      this.loopStrength = random(0.015, 0.025);
       this.curvatureTarget =
         random() < 0.5 ? this.loopStrength : -this.loopStrength;
-      this.loopCooldown = floor(random(620, 1300)); // slightly rarer
+      this.loopCooldown = floor(random(620, 1300));
     }
 
     // ---- CURVATURE DECAY ----
     this.curvature = lerp(this.curvature, this.curvatureTarget, 0.04);
-    this.curvatureTarget *= 0.996; // 🔴 longer, smoother arc
+    this.curvatureTarget *= 0.996;
 
     // ---- APPLY TURN ----
     this.heading += baseTurn + this.curvature;
 
-    // ---- MOVE FORWARD (ALWAYS) ----
+    // ---- MOVE FORWARD ----
     head.x += cos(this.heading) * this.speed;
     head.y += sin(this.heading) * this.speed;
 
@@ -86,6 +92,15 @@ class Nematode {
     if (head.x > width) head.x = 0;
     if (head.y < 0) head.y = height;
     if (head.y > height) head.y = 0;
+
+    // 🔴 CAMERA POSITION (head)
+    this.x = head.x;
+    this.y = head.y;
+
+    // 🔴 HIT POSITION (body center)
+    let mid = this.spine[Math.floor(this.segmentCount * 0.45)];
+    this.hitX = mid.x;
+    this.hitY = mid.y;
   }
 
   // ----------------------------------------------------------
