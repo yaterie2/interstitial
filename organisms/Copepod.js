@@ -1,102 +1,114 @@
+// ------------------------------------------------------------
+// Harpacticoid Copepod – rebuilt
+// Burst locomotion, compact crustacean morphology
+// ------------------------------------------------------------
+
 class Copepod {
   constructor(x, y) {
-    this.pos = createVector(x, y);
-    this.vel = p5.Vector.random2D();
+    this.x = x;
+    this.y = y;
+
     this.angle = random(TWO_PI);
+    this.angularVel = 0;
 
-    // -------- SIZE (biologically correct) --------
-    this.bodyLength = random(10, 14); // smaller than tardigrade
-    this.bodyWidth = random(4, 6);
+    this.bodyLength = random(9, 13);
+    this.bodyWidth = random(3.5, 5);
 
-    // -------- MOVEMENT PARAMETERS --------
-    this.speed = random(0.6, 1.2); // faster than nematodes
-    this.burstSpeed = random(1.8, 2.6);
+    this.speed = random(0.4, 0.8);
+    this.burstSpeed = random(1.6, 2.4);
+
     this.state = "pause";
-    this.stateTimer = floor(random(20, 80));
+    this.timer = floor(random(20, 60));
 
-    // -------- BEHAVIOR --------
-    this.turnRate = random(0.04, 0.09);
-    this.biasToBiofilm = random(0.3, 0.6);
+    this.antLen = random(6, 9);
   }
 
   update() {
-    this.stateTimer--;
+    this.timer--;
 
-    // -------- STATE SWITCHING (burst / pause) --------
-    if (this.stateTimer <= 0) {
+    if (this.timer <= 0) {
       if (this.state === "pause") {
         this.state = "burst";
-        this.stateTimer = floor(random(8, 18));
-        this.angle += random(-PI / 3, PI / 3);
+        this.timer = floor(random(6, 14));
+        this.angularVel += random(-0.35, 0.35);
       } else {
         this.state = "pause";
-        this.stateTimer = floor(random(20, 70));
+        this.timer = floor(random(25, 70));
       }
     }
 
-    // -------- MOVEMENT --------
-    if (this.state === "burst") {
-      let dir = p5.Vector.fromAngle(this.angle);
-      dir.mult(this.burstSpeed);
-      this.pos.add(dir);
-    } else {
-      // subtle drifting + probing
-      this.angle += random(-this.turnRate, this.turnRate);
-    }
+    // smooth steering
+    this.angularVel += random(-0.015, 0.015);
+    this.angularVel *= 0.88;
+    this.angle += this.angularVel;
 
-    // -------- EDGE HANDLING --------
-    if (this.pos.x < 0 || this.pos.x > width) this.angle = PI - this.angle;
-    if (this.pos.y < 0 || this.pos.y > height) this.angle = -this.angle;
+    // movement
+    let v = this.state === "burst" ? this.burstSpeed : this.speed;
 
-    this.pos.x = constrain(this.pos.x, 0, width);
-    this.pos.y = constrain(this.pos.y, 0, height);
+    this.x += cos(this.angle) * v;
+    this.y += sin(this.angle) * v;
+
+    // wrap
+    if (this.x < 0) this.x = width;
+    if (this.x > width) this.x = 0;
+    if (this.y < 0) this.y = height;
+    if (this.y > height) this.y = 0;
   }
 
   display() {
     push();
-    translate(this.pos.x, this.pos.y);
+    translate(this.x, this.y);
     rotate(this.angle);
-
     noStroke();
 
-    // -------- BODY SEGMENTS --------
+    // body – teardrop
     fill(170, 190, 200, 230);
     ellipse(0, 0, this.bodyLength, this.bodyWidth);
 
-    fill(160, 175, 185, 230);
+    fill(150, 170, 180, 220);
     ellipse(
       -this.bodyLength * 0.25,
       0,
-      this.bodyLength * 0.6,
-      this.bodyWidth * 0.9
+      this.bodyLength * 0.75,
+      this.bodyWidth * 1.1
     );
 
-    // -------- ANTENNAE (KEY IDENTIFIER) --------
-    stroke(190, 210, 220, 200);
+    // pointed posterior
+    fill(140, 160, 170, 220);
+    triangle(
+      -this.bodyLength * 0.55,
+      0,
+      -this.bodyLength * 0.8,
+      -this.bodyWidth * 0.25,
+      -this.bodyLength * 0.8,
+      this.bodyWidth * 0.25
+    );
+
+    // antennae
+    stroke(190, 210, 220, 190);
     strokeWeight(1);
 
-    let antLen = random(6, 10);
     line(
       this.bodyLength * 0.45,
       -this.bodyWidth * 0.3,
-      this.bodyLength * 0.45 + antLen,
+      this.bodyLength * 0.45 + this.antLen,
       -this.bodyWidth
     );
     line(
       this.bodyLength * 0.45,
       this.bodyWidth * 0.3,
-      this.bodyLength * 0.45 + antLen,
+      this.bodyLength * 0.45 + this.antLen,
       this.bodyWidth
     );
 
-    // -------- LEG FLICK SUGGESTION --------
-    stroke(150, 165, 175, 160);
+    // legs (subtle)
+    stroke(150, 165, 175, 150);
     for (let i = -1; i <= 1; i++) {
       line(
         -this.bodyLength * 0.1,
-        i * this.bodyWidth * 0.3,
+        i * this.bodyWidth * 0.25,
         -this.bodyLength * 0.3,
-        i * this.bodyWidth * 0.6
+        i * this.bodyWidth * 0.55
       );
     }
 

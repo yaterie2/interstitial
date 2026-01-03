@@ -2,14 +2,21 @@ let bg;
 let sand;
 let darkSand;
 let biofilm;
+
 let diatoms = [];
 let ciliates = [];
 let gastrotrichs = [];
 let tardigrades = [];
 let kinorhynchs = [];
-let copepods = [];
+let oligochaetes = [];
 let forams = [];
-let organisms = [];
+let nematodes = [];
+let copepods = [];
+
+function lerpAngle(a, b, t) {
+  let diff = ((b - a + PI) % TWO_PI) - PI;
+  return a + diff * t;
+}
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
@@ -19,10 +26,9 @@ function setup() {
   sand = new Sand();
   darkSand = new DarkSand();
 
-  let nematodeCount = 6;
-
-  for (let i = 0; i < nematodeCount; i++) {
-    organisms.push(
+  // --- NEMATODES ---
+  for (let i = 0; i < 12; i++) {
+    nematodes.push(
       new Nematode(
         random(width * 0.2, width * 0.8),
         random(height * 0.2, height * 0.8)
@@ -30,6 +36,17 @@ function setup() {
     );
   }
 
+  // --- COPEPODS ---
+  for (let i = 0; i < 7; i++) {
+    copepods.push(
+      new Copepod(
+        random(width * 0.2, width * 0.8),
+        random(height * 0.2, height * 0.8)
+      )
+    );
+  }
+
+  // --- GASTROTRICHS ---
   for (let i = 0; i < 32; i++) {
     gastrotrichs.push(
       new Gastrotrich(
@@ -39,6 +56,17 @@ function setup() {
     );
   }
 
+  // --- OLIGOCHAETES ---
+  for (let i = 0; i < 4; i++) {
+    oligochaetes.push(
+      new Oligochaete(
+        random(width * 0.2, width * 0.8),
+        random(height * 0.2, height * 0.8)
+      )
+    );
+  }
+
+  // --- KINORHYNCHS ---
   for (let i = 0; i < 8; i++) {
     kinorhynchs.push(
       new Kinorhynch(
@@ -48,21 +76,12 @@ function setup() {
     );
   }
 
-  let copepods = [];
-
-  for (let i = 0; i < 6; i++) {
-    copepods.push(
-      new Copepod(
-        random(width * 0.2, width * 0.8),
-        random(height * 0.2, height * 0.8)
-      )
-    );
-  }
-
+  // --- CILIATES ---
   for (let i = 0; i < 28; i++) {
     ciliates.push(new Ciliate(random(width), random(height)));
   }
 
+  // --- TARDIGRADES ---
   for (let i = 0; i < 3; i++) {
     tardigrades.push(
       new Tardigrade(
@@ -72,69 +91,31 @@ function setup() {
     );
   }
 
+  // --- DIATOMS ---
   for (let i = 0; i < 80; i++) {
-    diatoms.push(
-      new Diatom(
-        random(width),
-        random(height * 0.6) // bias toward upper sediment
-      )
-    );
+    diatoms.push(new Diatom(random(width), random(height * 0.6)));
   }
 
-
+  // --- FORAMINIFERA ---
   for (let i = 0; i < 40; i++) {
     forams.push(new Foraminifera(random(width), random(height)));
   }
-
-
-//   organisms.push(new Nematode(200, 200));
-//   organisms.push(new Copepod(300, 300));
 }
 
 function draw() {
   bg.display();
   biofilm.display();
 
-  for (let t of tardigrades) {
-    t.update();
-    t.display();
-  }
-
-  for (let c of copepods) {
-    c.update();
-    c.display();
-  }
-
-  for (let d of diatoms) {
-    d.update();
-    d.display();
-  }
-
-  for (let f of forams) {
-    f.update();
-    f.display();
-  }
-
-  for (let k of kinorhynchs) {
-    k.update();
-    k.display();
-  }
-
-  for (let c of ciliates) {
-    c.update();
-    c.display();
-  }
-
-  for (let g of gastrotrichs) {
-    g.update();
-    g.display();
-  }
+  for (let t of tardigrades) t.update(), t.display();
+  for (let n of nematodes) n.update(), n.display();
+  for (let c of copepods) c.update(), c.display();
+  for (let d of diatoms) d.update(), d.display();
+  for (let f of forams) f.update(), f.display();
+  for (let o of oligochaetes) o.update(), o.display();
+  for (let k of kinorhynchs) k.update(), k.display();
+  for (let c of ciliates) c.update(), c.display();
+  for (let g of gastrotrichs) g.update(), g.display();
 
   sand.display();
   darkSand.display();
-
-  for (let o of organisms) {
-    o.update();
-    o.display();
-  }
 }
