@@ -6,6 +6,10 @@
 
 class Foraminifera {
   constructor(x, y) {
+    this.speciesName = "Foraminifera";
+
+    // optional but recommended
+    this.speciesId = "foraminifera";
     this.x = x;
     this.y = y;
 

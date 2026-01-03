@@ -5,6 +5,10 @@
 
 class Nematode {
   constructor(x, y) {
+    this.speciesName = "Nematode (Roundworm)";
+
+    // optional but recommended
+    this.speciesId = "nematode";
     // ---- SPINE ----
     this.segmentCount = 46;
     this.segmentLength = random(1.15, 1.4);

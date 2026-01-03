@@ -8,6 +8,10 @@
 
 class Gastrotrich {
   constructor(x, y) {
+    this.speciesName = "Gastrotrich";
+
+    // optional but recommended
+    this.speciesId = "gastrotrich";
     this.x = x;
     this.y = y;
 

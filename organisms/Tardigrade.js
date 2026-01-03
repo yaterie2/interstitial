@@ -1,5 +1,9 @@
 class Tardigrade {
   constructor(x, y) {
+    this.speciesName = "Tardigrade (Water Bear)";
+
+    // optional but recommended
+    this.speciesId = "tardigrade";
     this.x = x;
     this.y = y;
 

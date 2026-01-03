@@ -13,7 +13,7 @@ class Sand {
     g.noStroke();
     g.clear();
 
-    let numGrains = 50;
+    let numGrains = 40;
     let grainCenters = [];
     let minDist = 95;
 

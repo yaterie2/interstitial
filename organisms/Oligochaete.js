@@ -7,6 +7,10 @@
 
 class Oligochaete {
   constructor(x, y) {
+    this.speciesName = "Oligochaete Worm";
+
+    // optional but recommended
+    this.speciesId = "oligochaete";
     this.x = x;
     this.y = y;
 

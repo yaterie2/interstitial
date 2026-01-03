@@ -7,6 +7,10 @@
 
 class Ciliate {
   constructor(x, y) {
+    this.speciesName = "Ciliate";
+
+    // optional but recommended
+    this.speciesId = "ciliate";
     this.x = x;
     this.y = y;
 

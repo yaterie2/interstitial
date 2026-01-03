@@ -8,6 +8,10 @@
 
 class Kinorhynch {
   constructor(x, y) {
+    this.speciesName = "Kinorhynch (Mud Dragon)";
+
+    // optional but recommended
+    this.speciesId = "kinorhynch";
     this.x = x;
     this.y = y;
 

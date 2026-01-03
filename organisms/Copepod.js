@@ -5,6 +5,10 @@
 
 class Copepod {
   constructor(x, y) {
+    this.speciesName = "Harpacticoid Copepod";
+
+    // optional but recommended
+    this.speciesId = "copepod";
     this.x = x;
     this.y = y;
 

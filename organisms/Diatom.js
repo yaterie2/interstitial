@@ -6,6 +6,10 @@
 
 class Diatom {
   constructor(x, y) {
+    this.speciesName = "Diatom (Benthic Microalgae)";
+
+    // optional but recommended
+    this.speciesId = "diatom";
     this.pos = createVector(x, y);
 
     // size slightly larger than bacteria, smaller than forams

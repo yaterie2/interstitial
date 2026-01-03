@@ -11,6 +11,7 @@ let cam = {
 };
 
 let selectedOrganism = null;
+let infoOpen = false;
 
 // ------------------------------------------------------------
 // WORLD LAYERS
@@ -199,6 +200,8 @@ function draw() {
     cam.targetY =
       selectedOrganism.camY ?? selectedOrganism.y ?? selectedOrganism.pos?.y;
   }
+
+  drawUI();
 }
 
 // ------------------------------------------------------------
@@ -218,6 +221,16 @@ function mousePressed() {
     cam.targetZoom = 1.0;
     cam.targetX = width / 2;
     cam.targetY = height / 2;
+  }
+
+  if (selectedOrganism) {
+    const margin = 28;
+    const y = height - 44;
+    const infoX = margin + textWidth(selectedOrganism.speciesName) + 16;
+
+    if (dist(mouseX, mouseY, infoX, y) < 10) {
+      infoOpen = !infoOpen;
+    }
   }
 }
 
@@ -252,4 +265,38 @@ function findClosestOrganism(x, y, radius) {
     }
   }
   return closest;
+}
+
+function drawUI() {
+  if (!selectedOrganism) return;
+
+  push();
+  resetMatrix(); // 🔒 CRITICAL: prevents camera distortion
+
+  const margin = 28;
+  const y = height - 44;
+
+  // background pill
+  noStroke();
+  fill(20, 20, 20, 170);
+  rect(margin - 14, y - 18, 300, 36, 18);
+
+  // organism name
+  fill(240);
+  textSize(14);
+  textAlign(LEFT, CENTER);
+  text(selectedOrganism.speciesName, margin, y);
+
+  // info icon
+  const infoX = margin + textWidth(selectedOrganism.speciesName) + 16;
+  const r = 9;
+
+  fill(235);
+  ellipse(infoX, y, r * 2);
+
+  fill(30);
+  textAlign(CENTER, CENTER);
+  text("i", infoX, y + 1);
+
+  pop();
 }
