@@ -50,6 +50,7 @@ function setup() {
 
   setupUI();
   setupOrganismInfo();
+  setupIntroOverlay();
 
   bg = new Background();
   biofilm = new Biofilm();

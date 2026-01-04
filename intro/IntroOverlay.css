@@ -1,0 +1,89 @@
+/* intro/IntroOverlay.css */
+
+#intro-overlay {
+  position: fixed;
+  inset: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: rgba(0, 0, 0, 0.15); /* subtle dim */
+  backdrop-filter: blur(2px);
+
+  z-index: 999; /* 🔝 highest layer */
+}
+
+.intro-panel {
+  max-width: min(90vw, 520px);
+  padding: 2.2rem 2.4rem;
+
+  background: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(6px);
+
+  border-radius: 1.1rem;
+
+  font-family: "Inter", system-ui, sans-serif;
+  color: #100470;
+
+  text-align: center;
+}
+
+.intro-panel h1 {
+  margin: 0 0 0.8rem 0;
+  font-size: clamp(2rem, 4vw, 20.6rem);
+  font-weight: 800;
+  letter-spacing: 0.04em;
+}
+
+.intro-subtitle {
+  font-size: 2rem;
+  line-height: 1.5;
+  margin-bottom: 2.2rem;
+  font-weight: 600;
+  opacity: 0.85;
+}
+
+.intro-instruction {
+  font-size: 0.95rem;
+  line-height: 1.45;
+  margin-bottom: 1rem;
+  opacity: 0.9;
+}
+
+.intro-button {
+  font-family: inherit;
+  font-size: 1rem;
+
+  padding: 0.7rem 12.8rem;
+  border-radius: 999px;
+
+  border: none;
+  background: rgba(16, 4, 112, 0.85);
+  color: white;
+
+  cursor: pointer;
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+
+.intro-button:hover {
+  transform: scale(1.04);
+  opacity: 0.95;
+}
+
+/* fade-out animation */
+#intro-overlay.intro-hide {
+  opacity: 0;
+  transition: opacity 0.35s ease;
+}
+
+/* .intro-credit {
+  margin-top: 1.6rem;
+
+  font-size: 0.65rem;
+  letter-spacing: 0.05em;
+
+  color: rgba(255, 255, 255, 0.85);
+
+  text-align: right;
+} */
