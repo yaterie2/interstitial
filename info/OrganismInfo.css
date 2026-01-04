@@ -6,9 +6,8 @@
   top: 0;
   right: 0;
 
-  width: 25vw;
-  min-width: 360px;
-  max-width: 520px;
+  width: min(28vw, 32rem);      /* responsive column width */
+  min-width: 22rem;
   height: 100vh;
 
   display: flex;
@@ -23,51 +22,87 @@
    INFO PANEL
 ------------------------------ */
 #info-panel {
-  pointer-events: auto;
+  position: relative;
+  margin-inline-end: 2vw;
+
+  max-height: 90vh;             /* never exceed viewport */
+  overflow-y: auto;
 
   width: 100%;
-  max-width: 480px;
 
-  margin-inline-end: 4vw;
+  padding: clamp(1.2rem, 2.5vh, 1.8rem)
+           clamp(1.2rem, 2.4vw, 1.6rem);
 
-  padding: 18px 22px;
   box-sizing: border-box;
 
   background: rgba(255, 255, 255, 0.6);
-  backdrop-filter: blur(6px);
+  backdrop-filter: blur(0.4rem);
 
   font-family: "Inter", system-ui, sans-serif;
-  font-size: 14px;
+  font-size: clamp(0.85rem, 1.2vw, 0.95rem);
   line-height: 1.55;
   color: #100470;
 
-  border-radius: 14px;
+  border-radius: clamp(0.8rem, 1.6vw, 1rem);
 
   display: none;
   user-select: none;
+
+  pointer-events: auto;
+}
+
+/* -----------------------------
+   INFO IMAGE
+------------------------------ */
+.info-image-wrapper {
+  width: 100%;
+  display: flex;
+  justify-content: flex-start;
+  margin-bottom: 1.2rem;
+}
+
+.info-image-wrapper img {
+  width: 13rem;
+  height: 10rem;
+
+  object-fit: cover;        /* 🔑 THIS fixes layout inconsistency */
+  object-position: center;
+
+  border-radius: 1rem;
+
+  background: rgba(255, 255, 255, 0.25); /* subtle unifier */
+  opacity: 0.96;
+
+  pointer-events: none;
 }
 
 /* -----------------------------
    INFO PANEL TYPOGRAPHY
 ------------------------------ */
 #info-panel h2 {
-  margin: 0 0 10px 0;
-  font-size: 20px;
+  margin: 0 0 clamp(0.6rem, 1.2vh, 0.8rem) 0;
+  font-size: clamp(1.1rem, 2.4vw, 1.35rem);
   font-weight: 600;
 }
 
 #info-panel h3 {
-  margin: 0 0 10px 0;
-  font-size: 20px;
+  margin: clamp(1rem, 2vh, 1.2rem) 0
+          clamp(0.3rem, 0.8vh, 0.4rem) 0;
+
+  font-size: clamp(0.7rem, 1.1vw, 0.78rem);
   font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  opacity: 0.85;
 }
 
 #info-panel p,
 #info-panel li {
-  font-size: 14px;
-  line-height: 1.45;
+  font-size: clamp(0.82rem, 1.1vw, 0.92rem);
+  line-height: 1.5;
 }
 
 #info-panel ul {
-  padding-left: 18px;
+  padding-left: clamp(1rem, 2vw, 1.2rem);
+  margin: clamp(0.4rem, 1vh, 0.6rem) 0 0 0;
 }

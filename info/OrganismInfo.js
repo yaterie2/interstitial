@@ -1,6 +1,7 @@
 const OrganismInfo = {
   nematode: {
     name: "Nematodes (Roundworms)",
+    image: "assets/info/nematode.jpg",
     role: "Nematodes dominate interstitial sediments by sheer abundance. They regulate bacterial populations, recycle nutrients, and maintain microbial turnover through constant grazing and movement.",
     remarkable:
       "They are the most abundant animals on Earth by number. Interstitial nematodes tolerate extreme salinity shifts, pollution, hypoxia, and physical disturbance, making them highly resilient ecosystem stabilizers.",
@@ -14,6 +15,7 @@ const OrganismInfo = {
 
   copepod: {
     name: "Harpacticoid Copepods",
+    image: "assets/info/copepod.jpg",
     role: "Harpacticoid copepods connect microbial production to higher trophic levels by grazing on microalgae and meiofauna.",
     remarkable:
       "Despite their small size, they show complex, highly mobile behavior and navigate sediment as a three-dimensional environment rather than a flat surface.",
@@ -27,6 +29,7 @@ const OrganismInfo = {
 
   diatom: {
     name: "Benthic Diatoms",
+    image: "assets/info/diatom.jpg",
     role: "Benthic diatoms are primary producers that convert light and nutrients into organic matter, forming the energetic base of interstitial food webs.",
     remarkable:
       "Their silica cell walls form intricate microscopic architectures, and many species secrete sticky polymers that bind sediment grains together.",
@@ -40,6 +43,7 @@ const OrganismInfo = {
 
   foraminifera: {
     name: "Foraminifera",
+    image: "assets/info/foraminifera.jpg",
     role: "Foraminifera contribute to sediment formation and act as sensitive indicators of environmental conditions within coastal muds.",
     remarkable:
       "They construct mineral shells that record chemical conditions of their environment, leaving long-lasting geological and climatic records.",
@@ -52,6 +56,7 @@ const OrganismInfo = {
 
   ciliate: {
     name: "Ciliates",
+    image: "assets/info/ciliate.jpg",
     role: "Ciliates regulate bacterial populations and accelerate nutrient cycling by rapidly consuming and processing microbial biomass.",
     remarkable:
       "They move using coordinated cilia, generating micro-currents that alter chemical gradients in water-filled sediment pores.",
@@ -64,6 +69,7 @@ const OrganismInfo = {
 
   gastrotrich: {
     name: "Gastrotrichs",
+    image: "assets/info/gastrotrich.jpg",
     role: "Gastrotrichs contribute to decomposition and nutrient turnover by grazing on bacteria, microalgae, and organic particles.",
     remarkable:
       "They glide between sand grains using cilia and adhesive tubes, allowing precise movement through extremely tight spaces.",
@@ -77,6 +83,7 @@ const OrganismInfo = {
 
   kinorhynch: {
     name: "Kinorhynchs (Mud Dragons)",
+    image: "assets/info/kinorhynch.jpg",
     role: "Kinorhynchs are specialist sediment dwellers that indicate structurally stable, oxygenated mud systems.",
     remarkable:
       "Their segmented, armored bodies and retractable spiny heads give them one of the most unusual morphologies among meiofauna.",
@@ -89,6 +96,7 @@ const OrganismInfo = {
 
   tardigrade: {
     name: "Tardigrades (Water Bears)",
+    image: "assets/info/tardigrade.jpg",
     role: "Tardigrades are opportunistic feeders that consume algae, bacteria, and small interstitial animals.",
     remarkable:
       "They can enter cryptobiosis, surviving extreme dehydration, freezing, radiation, and long-term dormancy.",
@@ -101,6 +109,7 @@ const OrganismInfo = {
 
   oligochaete: {
     name: "Oligochaete Worms (Micro-annelids)",
+    image: "assets/info/oligochaete.jpg",
     role: "Oligochaetes act as ecosystem engineers, mixing sediments and increasing oxygen penetration into deeper layers.",
     remarkable:
       "Their continuous burrowing reshapes sediment architecture, indirectly controlling microbial activity and chemical gradients.",
@@ -149,24 +158,27 @@ function showOrganismInfo(speciesId) {
   if (!data) return;
 
   infoPanel.html(`
+  <div class="info-image-wrapper">
+    <img src="${data.image}" alt="${data.name}">
+  </div>
 
-    <section>
-      <h3>Role</h3>
-      <p>${data.role}</p>
-    </section>
+  <section>
+    <h3>Role</h3>
+    <p>${data.role}</p>
+  </section>
 
-    <section>
-      <h3>Why remarkable</h3>
-      <p>${data.remarkable}</p>
-    </section>
+  <section>
+    <h3>Why remarkable</h3>
+    <p>${data.remarkable}</p>
+  </section>
 
-    <section>
-      <h3>Ecological relations</h3>
-      <ul>
-        ${data.relations.map(r => `<li>${r}</li>`).join("")}
-      </ul>
-    </section>
-  `);
+  <section>
+    <h3>Ecological relations</h3>
+    <ul>
+      ${data.relations.map((r) => `<li>${r}</li>`).join("")}
+    </ul>
+  </section>
+`);
 
   infoPanel.style("display", "block");
   infoVisible = true;
