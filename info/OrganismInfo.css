@@ -1,0 +1,73 @@
+/* -----------------------------
+   INFO COLUMN (RIGHT SIDE)
+------------------------------ */
+#info-column {
+  position: fixed;
+  top: 0;
+  right: 0;
+
+  width: 25vw;
+  min-width: 360px;
+  max-width: 520px;
+  height: 100vh;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  pointer-events: none;
+  z-index: 20;
+}
+
+/* -----------------------------
+   INFO PANEL
+------------------------------ */
+#info-panel {
+  pointer-events: auto;
+
+  width: 100%;
+  max-width: 480px;
+
+  margin-inline-end: 4vw;
+
+  padding: 18px 22px;
+  box-sizing: border-box;
+
+  background: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(6px);
+
+  font-family: "Inter", system-ui, sans-serif;
+  font-size: 14px;
+  line-height: 1.55;
+  color: #100470;
+
+  border-radius: 14px;
+
+  display: none;
+  user-select: none;
+}
+
+/* -----------------------------
+   INFO PANEL TYPOGRAPHY
+------------------------------ */
+#info-panel h2 {
+  margin: 0 0 10px 0;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+#info-panel h3 {
+  margin: 0 0 10px 0;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+#info-panel p,
+#info-panel li {
+  font-size: 14px;
+  line-height: 1.45;
+}
+
+#info-panel ul {
+  padding-left: 18px;
+}

@@ -27,7 +27,7 @@
   user-select: none;
 
   /* 🔒 CRITICAL */
-  pointer-events: none;
+  pointer-events: auto;
   /* cursor: default; */
 }
 
@@ -56,29 +56,3 @@ pointer-events: auto;
   opacity: 1;
 }
 
-/* -----------------------------
-   INFO PANEL
------------------------------- */
-#info-panel {
-  position: fixed;
-  bottom: 22%;
-  left: 50%;
-  transform: translateX(-50%);
-
-  max-width: 520px;
-  padding: 14px 18px;
-
-  background: rgba(255, 255, 255, 0.6);
-  backdrop-filter: blur(6px);
-
-  font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-  font-size: 14px;
-  line-height: 1.5;
-  color: #100470;
-
-  border-radius: 12px;
-
-  display: none;
-
-  user-select: none;
-}

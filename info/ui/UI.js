@@ -1,7 +1,6 @@
 let uiRoot;
 let nameLabel;
 let infoIcon;
-let infoPanel;
 
 function setupUI() {
   uiRoot = createDiv();
@@ -13,15 +12,23 @@ function setupUI() {
   infoIcon = createDiv("ⓘ");
   infoIcon.id("info-icon");
 
-  infoPanel = createDiv("");
-  infoPanel.id("info-panel");
-
   uiRoot.child(nameLabel);
   uiRoot.child(infoIcon);
 
-  infoIcon.mousePressed(() => {
-    infoOpen = !infoOpen;
-    infoPanel.style("display", infoOpen ? "block" : "none");
+  infoIcon.mousePressed((event) => {
+    event.stopPropagation();
+    if (!selectedOrganism) return;
+    toggleOrganismInfo(selectedOrganism.speciesId);
+
+    if (hit) {
+      selectedOrganism = hit;
+      cam.targetZoom = 2.6;
+
+      // 🔑 NEW: if info panel already open, update it
+      if (infoVisible && selectedOrganism.speciesId) {
+        showOrganismInfo(selectedOrganism.speciesId);
+      }
+    }
   });
 
   hideUI();
@@ -34,24 +41,16 @@ function updateUI(organism) {
   }
 
   nameLabel.html(organism.speciesName);
-
-  infoPanel.html(
-    organism.infoText ?? "Detailed biological information will appear here."
-  );
-
   uiRoot.style("opacity", "1");
   uiRoot.style("pointer-events", "auto");
+
+  if (infoVisible && organism?.speciesId) {
+    showOrganismInfo(organism.speciesId);
+  }
 }
 
 function hideUI() {
   if (!uiRoot) return;
-
-  infoOpen = false;
-
   uiRoot.style("opacity", "0");
   uiRoot.style("pointer-events", "none");
-
-  if (infoPanel) {
-    infoPanel.style("display", "none");
-  }
 }

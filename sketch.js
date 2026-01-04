@@ -48,6 +48,7 @@ function setup() {
 
   // UI (DOM-based)
   setupUI();
+  setupOrganismInfo();
 
   // --- BACKGROUND & SUBSTRATE ---
   bg = new Background();
@@ -160,10 +161,6 @@ function updateCursor() {
   } else {
     cursor("default");
   }
-
-  if (hit) {
-    console.log("hovering organism");
-  }
 }
 
 // ------------------------------------------------------------
@@ -173,7 +170,7 @@ function mousePressed() {
   let wx = (mouseX - width / 2) / cam.zoom + cam.x;
   let wy = (mouseY - height / 2) / cam.zoom + cam.y;
 
-  let hit = findClosestOrganism(wx, wy, 20 / cam.zoom);
+  let hit = findClosestOrganism(wx, wy, 20);
 
   if (hit) {
     selectedOrganism = hit;
@@ -183,6 +180,7 @@ function mousePressed() {
     cam.targetZoom = 1.15;
     cam.targetX = width / 2;
     cam.targetY = height / 2;
+    hideOrganismInfo();
     hideUI();
   }
 }

@@ -10,6 +10,7 @@ class Ciliate {
     this.speciesName = "Ciliate";
 
     // optional but recommended
+    
     this.speciesId = "ciliate";
     this.x = x;
     this.y = y;
