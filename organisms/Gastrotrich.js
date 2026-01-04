@@ -38,6 +38,16 @@ class Gastrotrich {
 
     // ---- MICRO MOTION ----
     this.phase = random(TWO_PI);
+
+    // ---- HIT & HIGHLIGHT CONTRACT ----
+    this.hitX = this.x;
+    this.hitY = this.y;
+
+    this.highlightX = this.x;
+    this.highlightY = this.y;
+
+    // highlight slightly larger than body
+    this.highlightRadius = max(this.length, this.width) * 1.8;
   }
 
   // ----------------------------------------------------------
@@ -71,6 +81,13 @@ class Gastrotrich {
     // keep inside canvas
     this.x = constrain(this.x, 0, width);
     this.y = constrain(this.y, 0, height);
+
+    // ---- SYNC HIT & HIGHLIGHT POSITIONS ----
+    this.hitX = this.x;
+    this.hitY = this.y;
+
+    this.highlightX = this.x;
+    this.highlightY = this.y;
   }
 
   // ----------------------------------------------------------

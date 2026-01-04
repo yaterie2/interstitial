@@ -39,6 +39,18 @@ class Diatom {
     }
 
     this.generateGeometry();
+
+    // --- EXPOSE POSITIONS (REQUIRED BY SYSTEM) ---
+    this.x = this.pos.x;
+    this.y = this.pos.y;
+
+    this.hitX = this.pos.x;
+    this.hitY = this.pos.y;
+
+    this.highlightX = this.pos.x;
+    this.highlightY = this.pos.y;
+    this.highlightRadius =
+      this.type === "pennate" ? this.length * 1.8 : this.radius * 2.2;
   }
 
   generateGeometry() {
@@ -60,6 +72,16 @@ class Diatom {
     // keep within canvas
     this.pos.x = constrain(this.pos.x, 0, width);
     this.pos.y = constrain(this.pos.y, 0, height);
+
+    // ---- SYNC POSITIONS ----
+    this.x = this.pos.x;
+    this.y = this.pos.y;
+
+    this.hitX = this.pos.x;
+    this.hitY = this.pos.y;
+
+    this.highlightX = this.pos.x;
+    this.highlightY = this.pos.y;
   }
 
   display() {
@@ -73,8 +95,7 @@ class Diatom {
     strokeWeight(0.7);
 
     if (this.type === "pennate") {
-
-        fill(red(this.col), green(this.col), blue(this.col), 35);
+      fill(red(this.col), green(this.col), blue(this.col), 35);
 
       // main body
       ellipse(0, 0, this.length, this.width);

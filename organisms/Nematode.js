@@ -50,6 +50,11 @@ class Nematode {
       random(170, 190),
       220
     );
+
+    // ---- HIGHLIGHT PROPERTIES ----
+    this.highlightX = x;
+    this.highlightY = y;
+    this.highlightRadius = this.maxThickness * 6;
   }
 
   // ----------------------------------------------------------
@@ -105,6 +110,13 @@ class Nematode {
     let mid = this.spine[Math.floor(this.segmentCount * 0.45)];
     this.hitX = mid.x;
     this.hitY = mid.y;
+
+    // 🔵 HIGHLIGHT POSITION (mid-body, stable)
+    this.highlightX = mid.x;
+    this.highlightY = mid.y;
+
+    // 🔵 HIGHLIGHT SIZE (scales with body)
+    this.highlightRadius = this.maxThickness * 6;
   }
 
   // ----------------------------------------------------------

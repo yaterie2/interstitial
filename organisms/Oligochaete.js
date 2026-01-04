@@ -35,6 +35,12 @@ class Oligochaete {
       random(95, 110),
       210
     );
+
+    this.hitX = this.x;
+    this.hitY = this.y;
+    this.highlightX = this.x;
+    this.highlightY = this.y;
+    this.highlightRadius = max(this.length, this.width) * 1;
   }
 
   // ----------------------------------------------------------
@@ -52,6 +58,13 @@ class Oligochaete {
 
     this.x = constrain(this.x, 0, width);
     this.y = constrain(this.y, 0, height);
+
+    // ---- SYNC HIT & HIGHLIGHT POSITIONS ----
+    this.hitX = this.x;
+    this.hitY = this.y;
+
+    this.highlightX = this.x;
+    this.highlightY = this.y;
   }
 
   // ----------------------------------------------------------

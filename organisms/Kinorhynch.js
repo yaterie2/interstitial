@@ -43,6 +43,17 @@ class Kinorhynch {
       random(110, 130),
       220
     );
+
+    // ---- HIT & HIGHLIGHT CONTRACT ----
+    this.hitX = this.x;
+    this.hitY = this.y;
+
+    // center highlight on body midpoint
+    this.highlightX = this.x;
+    this.highlightY = this.y;
+
+    // elongated body → larger than gastrotrich
+    this.highlightRadius = max(this.length, this.width) * 2.3;
   }
 
   // ----------------------------------------------------------
@@ -97,6 +108,13 @@ class Kinorhynch {
 
     this.x = constrain(this.x, 0, width);
     this.y = constrain(this.y, 0, height);
+
+    // ---- SYNC HIT & HIGHLIGHT POSITIONS ----
+    this.hitX = this.x;
+    this.hitY = this.y;
+
+    this.highlightX = this.x;
+    this.highlightY = this.y;
   }
 
   // ----------------------------------------------------------

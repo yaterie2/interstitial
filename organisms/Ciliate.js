@@ -8,14 +8,12 @@
 class Ciliate {
   constructor(x, y) {
     this.speciesName = "Ciliate";
-
-    // optional but recommended
-    
     this.speciesId = "ciliate";
+
     this.x = x;
     this.y = y;
 
-    this.scale = random(0.6, 1.0); // smaller than tardigrades
+    this.scale = random(0.6, 1.0);
     this.angle = random(TWO_PI);
 
     this.speed = random(0.15, 0.35);
@@ -31,6 +29,11 @@ class Ciliate {
     this.col = color(random(190, 215), random(185, 210), random(170, 195), 190);
 
     this.ciliaPhase = random(TWO_PI);
+
+    // ---- HIGHLIGHT PROPERTIES ----
+    this.highlightX = this.x;
+    this.highlightY = this.y;
+    this.highlightRadius = max(this.w, this.h) * 2.4;
   }
 
   update() {
@@ -39,20 +42,32 @@ class Ciliate {
     if (this.pauseTimer > 0) {
       // slight rotation while feeding
       this.angle += sin(frameCount * 0.03) * 0.002;
-      return;
-    }
+    } else {
+      // movement burst
+      this.angle += random(-this.turnRate, this.turnRate);
+      this.x += cos(this.angle) * this.speed;
+      this.y += sin(this.angle) * this.speed;
 
-    // movement burst
-    this.angle += random(-this.turnRate, this.turnRate);
-    this.x += cos(this.angle) * this.speed;
-    this.y += sin(this.angle) * this.speed;
-
-    // reset pause
-    if (random() < 0.01) {
-      this.pauseTimer = random(80, 220);
+      if (random() < 0.01) {
+        this.pauseTimer = random(80, 220);
+      }
     }
 
     this.ciliaPhase += 0.15;
+
+    // ---- WORLD WRAP ----
+    if (this.x < 0) this.x = width;
+    if (this.x > width) this.x = 0;
+    if (this.y < 0) this.y = height;
+    if (this.y > height) this.y = 0;
+
+    // ---- HIGHLIGHT UPDATE ----
+    this.highlightX = this.x;
+    this.highlightY = this.y;
+
+    // subtle breathing of highlight
+    this.highlightRadius =
+      max(this.w, this.h) * (2.3 + sin(frameCount * 0.04) * 0.1);
   }
 
   display() {
@@ -70,6 +85,10 @@ class Ciliate {
     stroke(255, 245, 220, 45);
     strokeWeight(0.4);
     ellipse(0, 0, this.w * 1.05, this.h * 1.05);
+
+    // ---- CILIA SUGGESTION ----
+    stroke(255, 240, 220, 40);
+    strokeWeight(0.35);
 
     let steps = 10;
     for (let i = 0; i < steps; i++) {

@@ -6,9 +6,8 @@
 class Copepod {
   constructor(x, y) {
     this.speciesName = "Harpacticoid Copepod";
-
-    // optional but recommended
     this.speciesId = "copepod";
+
     this.x = x;
     this.y = y;
 
@@ -25,6 +24,11 @@ class Copepod {
     this.timer = floor(random(20, 60));
 
     this.antLen = random(6, 9);
+
+    // ---- HIGHLIGHT PROPERTIES ----
+    this.highlightX = this.x;
+    this.highlightY = this.y;
+    this.highlightRadius = this.bodyLength * 2.4;
   }
 
   update() {
@@ -48,7 +52,6 @@ class Copepod {
 
     // movement
     let v = this.state === "burst" ? this.burstSpeed : this.speed;
-
     this.x += cos(this.angle) * v;
     this.y += sin(this.angle) * v;
 
@@ -57,6 +60,14 @@ class Copepod {
     if (this.x > width) this.x = 0;
     if (this.y < 0) this.y = height;
     if (this.y > height) this.y = 0;
+
+    // ---- HIGHLIGHT UPDATE ----
+    this.highlightX = this.x;
+    this.highlightY = this.y;
+
+    // subtle pulse (feels alive, not UI-ish)
+    this.highlightRadius =
+      this.bodyLength * (2.3 + sin(frameCount * 0.05) * 0.15);
   }
 
   display() {

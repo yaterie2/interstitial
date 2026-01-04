@@ -4,7 +4,7 @@
 let cam = {
   x: 0,
   y: 0,
-  zoom: 1.15, // default zoom
+  zoom: 1.15,
   targetX: 0,
   targetY: 0,
   targetZoom: 1.15,
@@ -27,6 +27,8 @@ let sand;
 let darkSand;
 let biofilm;
 
+let highlightAlpha = 0;
+
 // ------------------------------------------------------------
 // ORGANISM ARRAYS
 // ------------------------------------------------------------
@@ -46,17 +48,14 @@ let copepods = [];
 function setup() {
   createCanvas(windowWidth, windowHeight);
 
-  // UI (DOM-based)
   setupUI();
   setupOrganismInfo();
 
-  // --- BACKGROUND & SUBSTRATE ---
   bg = new Background();
   biofilm = new Biofilm();
   sand = new Sand();
   darkSand = new DarkSand();
 
-  // --- ORGANISMS ---
   for (let i = 0; i < 12; i++)
     nematodes.push(new Nematode(random(width), random(height)));
 
@@ -84,7 +83,6 @@ function setup() {
   for (let i = 0; i < 40; i++)
     forams.push(new Foraminifera(random(width), random(height)));
 
-  // --- INITIAL CAMERA CENTER ---
   cam.x = width / 2;
   cam.y = height / 2;
   cam.targetX = cam.x;
@@ -113,6 +111,14 @@ function draw() {
 
   biofilm.display();
 
+  // ---------- HIGHLIGHT (BEHIND ORGANISMS) ----------
+  highlightAlpha = lerp(highlightAlpha, selectedOrganism ? 1 : 0, 0.08);
+
+  if (selectedOrganism) {
+    drawHighlight(selectedOrganism);
+  }
+
+  // ---------- ORGANISMS ----------
   for (let arr of [
     tardigrades,
     nematodes,
@@ -130,16 +136,23 @@ function draw() {
     }
   }
 
+  // ---------- SAND OVERLAY ----------
   sand.display();
   darkSand.display();
 
   // ---------- FOLLOW SELECTED ----------
   if (selectedOrganism) {
     cam.targetX =
-      selectedOrganism.camX ?? selectedOrganism.x ?? selectedOrganism.pos?.x;
+      selectedOrganism.camX ??
+      selectedOrganism.highlightX ??
+      selectedOrganism.x ??
+      selectedOrganism.pos?.x;
 
     cam.targetY =
-      selectedOrganism.camY ?? selectedOrganism.y ?? selectedOrganism.pos?.y;
+      selectedOrganism.camY ??
+      selectedOrganism.highlightY ??
+      selectedOrganism.y ??
+      selectedOrganism.pos?.y;
   }
 
   // ---------- UI & CURSOR ----------
@@ -148,7 +161,33 @@ function draw() {
 }
 
 // ------------------------------------------------------------
-// CURSOR HANDLING (CSS-BASED, STABLE)
+// HIGHLIGHT RENDERING
+// ------------------------------------------------------------
+function drawHighlight(o) {
+  if (o.highlightX == null || o.highlightY == null) return;
+
+  let pulse = 1 + sin(frameCount * 0.04) * 0.06;
+
+  push();
+  noStroke();
+
+  // ---- OUTER GLOW (more saturated) ----
+  fill(170, 215, 255, 95 * highlightAlpha);
+  ellipse(o.highlightX, o.highlightY, 64 * pulse, 64 * pulse);
+
+  // ---- MID LAYER ----
+  fill(190, 230, 255, 70 * highlightAlpha);
+  ellipse(o.highlightX, o.highlightY, 48 * pulse, 48 * pulse);
+
+  // ---- INNER CORE (very transparent) ----
+  fill(235, 245, 250, 90 * highlightAlpha);
+  ellipse(o.highlightX, o.highlightY, 38 * pulse, 38 * pulse);
+
+  pop();
+}
+
+// ------------------------------------------------------------
+// CURSOR HANDLING
 // ------------------------------------------------------------
 function updateCursor() {
   let wx = (mouseX - width / 2) / cam.zoom + cam.x;
@@ -205,8 +244,8 @@ function findClosestOrganism(x, y, radius) {
   ];
 
   for (let o of all) {
-    let ox = o.hitX ?? o.x ?? o.pos?.x;
-    let oy = o.hitY ?? o.y ?? o.pos?.y;
+    let ox = o.highlightX ?? o.x ?? o.pos?.x;
+    let oy = o.highlightY ?? o.y ?? o.pos?.y;
     if (ox == null || oy == null) continue;
 
     let d = dist(x, y, ox, oy);

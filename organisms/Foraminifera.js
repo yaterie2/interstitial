@@ -66,11 +66,37 @@ class Foraminifera {
       angle += random(0.85, 1.15);
       r *= random(1.12, 1.18);
     }
+
+    // ---- EXPOSE POSITIONS FOR CAMERA / PICKING / HIGHLIGHT ----
+    this.hitX = this.x;
+    this.hitY = this.y;
+
+    this.highlightX = this.x;
+    this.highlightY = this.y;
+
+    // estimate highlight size from outermost chamber
+    this.highlightRadius = 0;
+    for (let c of this.chambers) {
+      this.highlightRadius = max(
+        this.highlightRadius,
+        dist(0, 0, c.x, c.y) + c.r
+      );
+    }
+
+    // add padding so glow is visible
+    this.highlightRadius *= 3.2;
   }
 
   update() {
     this.rotation += 0.0002;
     this.pseudoPhase += 0.004;
+
+    // ---- SYNC HIT & HIGHLIGHT POSITIONS ----
+    this.hitX = this.x;
+    this.hitY = this.y;
+
+    this.highlightX = this.x;
+    this.highlightY = this.y;
   }
 
   display() {
