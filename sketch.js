@@ -180,7 +180,7 @@ function drawHighlight(o) {
   ellipse(o.highlightX, o.highlightY, 48 * pulse, 48 * pulse);
 
   // ---- INNER CORE (very transparent) ----
-  fill(235, 245, 250, 90 * highlightAlpha);
+  fill(235, 245, 250, 190 * highlightAlpha);
   ellipse(o.highlightX, o.highlightY, 38 * pulse, 38 * pulse);
 
   pop();
