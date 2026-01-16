@@ -1,5 +1,6 @@
-/* intro/IntroOverlay.css */
-
+/* -----------------------------
+   INTRO OVERLAY (FULLSCREEN)
+------------------------------ */
 #intro-overlay {
   position: fixed;
   inset: 0;
@@ -8,20 +9,34 @@
   align-items: center;
   justify-content: center;
 
-  background: rgba(0, 0, 0, 0.15); /* subtle dim */
-  backdrop-filter: blur(2px);
+  background: rgba(40, 30, 60, 0.35);
+  backdrop-filter: blur(8px);
 
-  z-index: 999; /* 🔝 highest layer */
+  z-index: 50;
+  transition: opacity 0.35s ease;
 }
 
+#intro-overlay.intro-hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+#intro-overlay button,
+#intro-overlay a {
+  pointer-events: auto;
+}
+
+/* -----------------------------
+   INTRO PANEL
+------------------------------ */
 .intro-panel {
   max-width: min(90vw, 520px);
-  padding: 2.2rem 2.4rem;
+  padding: clamp(1.6rem, 4vw, 2.4rem);
 
-  background: rgba(255, 255, 255, 0.6);
+  background: rgba(255, 255, 255, 0.65);
   backdrop-filter: blur(6px);
 
-  border-radius: 1.1rem;
+  border-radius: 1rem;
 
   font-family: "Inter", system-ui, sans-serif;
   color: #100470;
@@ -29,61 +44,85 @@
   text-align: center;
 }
 
+/* -----------------------------
+   TYPOGRAPHY
+------------------------------ */
 .intro-panel h1 {
-  margin: 0 0 0.8rem 0;
-  font-size: clamp(2rem, 4vw, 20.6rem);
+  margin: 0 0 0.6em 0;
+  font-size: clamp(2rem, 6vw, 12.8rem);
   font-weight: 800;
-  letter-spacing: 0.04em;
 }
 
 .intro-subtitle {
   font-size: 2rem;
   line-height: 1.5;
-  margin-bottom: 2.2rem;
-  font-weight: 600;
-  opacity: 0.85;
+  margin-bottom: 2rem;
 }
 
 .intro-instruction {
-  font-size: 0.95rem;
-  line-height: 1.45;
-  margin-bottom: 1rem;
-  opacity: 0.9;
+  font-size: 1rem;
+  line-height: 1.5;
+  opacity: 0.85;
+  margin-bottom: 1.6rem;
 }
 
-.intro-button {
-  font-family: inherit;
-  font-size: 1rem;
+/* -----------------------------
+   START BUTTON
+------------------------------ */
+#intro-start-btn {
+  appearance: none;
+  border: none;
 
-  padding: 0.7rem 12.8rem;
+  padding: 1em 14em;
   border-radius: 999px;
 
-  border: none;
-  background: rgba(16, 4, 112, 0.85);
+  font-size: 1rem;
+  font-weight: 500;
+
+  background: #100470;
   color: white;
 
   cursor: pointer;
-  transition: transform 0.15s ease, opacity 0.15s ease;
 }
 
-.intro-button:hover {
-  transform: scale(1.04);
-  opacity: 0.95;
+#intro-start-btn:hover {
+  opacity: 0.9;
 }
 
-/* fade-out animation */
-#intro-overlay.intro-hide {
-  opacity: 0;
-  transition: opacity 0.35s ease;
-}
+/* -----------------------------
+   CREDIT (BOTTOM RIGHT, OUTSIDE PANEL)
+------------------------------ */
 
-/* .intro-credit {
-  margin-top: 1.6rem;
+.intro-link {
+  position: fixed;
+  bottom: 2rem;
+  right: 1.8rem;
 
+  font-family: "Inter", system-ui, sans-serif;
   font-size: 0.65rem;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.08em;
+  margin-bottom: 1rem;
+
+  color: rgb(214, 190, 255);
+
+  pointer-events: auto;
+}
+
+.intro-link:hover {
+  text-decoration: underline;
+  pointer-events: auto;
+}
+
+.intro-credit {
+  position: fixed;
+  bottom: 1.5rem;
+  right: 1.8rem;
+
+  font-family: "Inter", system-ui, sans-serif;
+  font-size: 0.65rem;
+  letter-spacing: 0.08em;
 
   color: rgba(255, 255, 255, 0.85);
 
-  text-align: right;
-} */
+  pointer-events: auto;
+}

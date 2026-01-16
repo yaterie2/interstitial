@@ -4,8 +4,6 @@ let introOverlay;
 let introVisible = true;
 
 function setupIntroOverlay() {
-  if (introOverlay) return;
-
   introOverlay = createDiv();
   introOverlay.id("intro-overlay");
 
@@ -14,37 +12,39 @@ function setupIntroOverlay() {
       <h1>Hidden Life</h1>
 
       <p class="intro-subtitle">
-        An interactive exploration of microscopic life in coastal mud and sand.
+        An interactive exploration of interstitial organisms living between sand grains.
       </p>
 
       <p class="intro-instruction">
-        Click on organisms to zoom in, follow them, and discover their ecological roles.
+        Click on organisms to zoom in, follow their movement, and learn about their ecological roles.
       </p>
 
-      <button class="intro-button">Start</button>
+      <button id="intro-start-btn">Dive in</button>
     </div>
 
+    <div class="intro-link">
+    yannick-schwab.de
+  <a href="https://www.yannick-schwab.de" target="_blank" rel="noopener">
+  </a>
+</div>
 
+    <div class="intro-credit">
+      A Design Studio Project by Yannick Schwab
+    </div>
   `);
 
   introOverlay.parent(document.body);
 
-  // button logic
-  const btn = introOverlay.elt.querySelector(".intro-button");
-  btn.addEventListener("click", () => {
-    hideIntroOverlay();
-  });
+  select("#intro-start-btn").mousePressed(hideIntroOverlay);
 }
 
 function hideIntroOverlay() {
   if (!introOverlay) return;
 
-  introOverlay.class("intro-hide");
-  introVisible = false;
+  introOverlay.addClass("intro-hidden");
 
-  // remove from DOM after fade
   setTimeout(() => {
     introOverlay.remove();
-    introOverlay = null;
+    introVisible = false;
   }, 400);
 }
